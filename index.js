@@ -11,10 +11,11 @@ module.exports = (app) => {
   });
 
   app.on("issues.edited", async (context) => {
-    const description = await parseIssueDescription(context)
-    if (description) {
-      await addScopeToBet(context, description)
-    }
+    // Disabled for now, as there is a bug to fix
+    // const description = await parseIssueDescription(context)
+    // if (description) {
+    //   await addScopeToBet(context, description)
+    // }
   })
 
   app.on("projects_v2_item.edited", async (context) => {
