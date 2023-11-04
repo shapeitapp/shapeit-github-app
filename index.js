@@ -1,4 +1,4 @@
-const { handleNewPitch, getProjectNodeItem } = require('./lib/onboarding')
+const { handleNewPitch, handleNewScope, getProjectNodeItem } = require('./lib/onboarding')
 const { parseIssueDescription, addScopeToBet } = require('./lib/scopes')
 
 const ITEM_ISSUE_TYPE = "Issue"
@@ -16,11 +16,16 @@ module.exports = (app) => {
   });
 
   app.on("issues.edited", async (context) => {
-    // Disabled for now, as there is a bug to fix
-    // const description = await parseIssueDescription(context)
-    // if (description) {
-    //   await addScopeToBet(context, description)
-    // }
+    const issueNumber = context.payload.issue.number
+    const owner = context.payload.repository.owner.login
+    const repo = context.payload.repository.name
+    const issueNodeId = context.payload.issue.node_id
+
+    const description = await parseIssueDescription(context)
+    if (description) {
+      await addScopeToBet(context, description)
+      await handleNewScope(context, owner, repo, issueNodeId, issueNumber)
+    }
   })
 
   app.on("projects_v2_item.edited", async (context) => {
