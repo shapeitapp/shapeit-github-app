@@ -30,7 +30,6 @@ module.exports = (app) => {
 
   app.on("projects_v2_item.edited", async (context) => {
     console.log(`projects_v2_item.edited triggered`)
-
     const projectNodeId = context.payload.projects_v2_item.project_node_id
     const itemType = context.payload.projects_v2_item.content_type
     const itemNodeId = context.payload.projects_v2_item.node_id
@@ -42,7 +41,6 @@ module.exports = (app) => {
       const repository = item.content.repository.name
       const issueNodeId = item.content.id
       const issueNumber = item.content.number
-      console.log(owner, repository, issueNodeId)
       if (pitchType || betType) {
         console.log("That's a pitch or a Bet")
         await handleNewPitch(context, owner, repository, issueNodeId, issueNumber)
