@@ -1,5 +1,6 @@
 const { handleNewPitch, handleNewScope, getProjectNodeItem } = require('./lib/onboarding')
 const { parseIssueDescription, addScopeToBet } = require('./lib/scopes')
+const { handleProgress } = require('./lib/progress')
 
 const ITEM_ISSUE_TYPE = "Issue"
 const KIND_FIELD = "Kind"
@@ -45,9 +46,16 @@ module.exports = (app) => {
         console.log("That's a pitch or a Bet")
         await handleNewPitch(context, owner, repository, issueNodeId, issueNumber)
       }
-      console.log(`item`, item)
     } else {
       console.log("Not an issue")
     }
+  })
+
+  app.on("issue_comment.created", async(context) => {
+    console.log(`issue_comment.created`)
+    const issueNumber = context.payload.issue.number
+    const owner = context.payload.repository.owner.login
+    const repo = context.payload.repository.name
+    await handleProgress(context, owner, repo, issueNumber)
   })
 };
