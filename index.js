@@ -15,7 +15,6 @@ module.exports = (app) => {
     const owner = context.payload.repository.owner.login
     const repo = context.payload.repository.name
     const issueNodeId = context.payload.issue.node_id
-
     const description = await parseIssueDescription(context)
     if (description) {
       await addScopeToBet(context, description)
