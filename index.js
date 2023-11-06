@@ -30,7 +30,6 @@ module.exports = (app) => {
   })
 
   app.on("projects_v2_item.edited", async (context) => {
-    console.log(`projects_v2_item.edited triggered`)
     const projectNodeId = context.payload.projects_v2_item.project_node_id
     const itemType = context.payload.projects_v2_item.content_type
     const itemNodeId = context.payload.projects_v2_item.node_id
@@ -43,16 +42,12 @@ module.exports = (app) => {
       const issueNodeId = item.content.id
       const issueNumber = item.content.number
       if (pitchType || betType) {
-        console.log("That's a pitch or a Bet")
         await handleNewPitch(context, owner, repository, issueNodeId, issueNumber)
       }
-    } else {
-      console.log("Not an issue")
     }
   })
 
   app.on("issue_comment.created", async(context) => {
-    console.log(`issue_comment.created`)
     const issueNumber = context.payload.issue.number
     const owner = context.payload.repository.owner.login
     const repo = context.payload.repository.name
