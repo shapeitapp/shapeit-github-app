@@ -10,13 +10,7 @@ const BET_KIND_LABEL = "Bet"
 module.exports = (app) => {
   app.log.info("Yay, the app was loaded!")
 
-  app.on("issues.labeled", async (context) => {
-    if (context.payload.label?.name === 'pitch') {
-      handleNewPitch(context)
-    }
-  });
-
-  app.on("issues.edited", async (context) => {
+  app.on(["issues.edited", "issues.opened"], async (context) => {
     const issueNumber = context.payload.issue.number
     const owner = context.payload.repository.owner.login
     const repo = context.payload.repository.name
@@ -29,11 +23,11 @@ module.exports = (app) => {
     }
   })
 
-  app.on("projects_v2_item.edited", async (context) => {
+  app.on(["projects_v2_item.edited", "projects_v2_item.created"], async (context) => {
     const projectNodeId = context.payload.projects_v2_item.project_node_id
     const itemType = context.payload.projects_v2_item.content_type
     const itemNodeId = context.payload.projects_v2_item.node_id
-    if (itemType === "Issue") {
+    if (itemType === ITEM_ISSUE_TYPE) {
       const item = await getProjectNodeItem(context, projectNodeId, itemNodeId)
       const pitchType = item.fieldValues.nodes.find(item => item?.field?.name === KIND_FIELD && item?.name === PITCH_KIND_LABEL)
       const betType = item.fieldValues.nodes.find(item => item?.field?.name === KIND_FIELD && item?.name === BET_KIND_LABEL)
