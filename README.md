@@ -15,6 +15,8 @@ GITHUB_CLIENT_ID=XXX
 GITHUB_CLIENT_SECRET=XXXX
 ```
 
+`WEBHOOK_PROXY_URL` is only required in local dev.
+
 To create a Github app visit : https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/registering-a-github-app
 
 
