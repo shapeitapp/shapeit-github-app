@@ -1,6 +1,6 @@
 const { handleNewPitch, handleNewScope, getProjectNodeItem } = require('./lib/onboarding')
 const { parseIssueDescription, addScopeToBet } = require('./lib/scopes')
-const { handleProgress } = require('./lib/progress')
+const { handleProgress, handleAtRisk } = require('./lib/progress')
 
 const ITEM_ISSUE_TYPE = "Issue"
 const KIND_FIELD = "Kind"
@@ -45,5 +45,6 @@ module.exports = (app) => {
     const owner = context.payload.repository.owner.login
     const repo = context.payload.repository.name
     await handleProgress(context, owner, repo, issueNumber)
+    await handleAtRisk(context, owner, repo, issueNumber)
   })
 };
